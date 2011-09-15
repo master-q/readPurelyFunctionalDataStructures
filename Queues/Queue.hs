@@ -7,4 +7,3 @@ class Queue q where
   snoc    :: q a -> a -> q a
   head    :: q a -> a
   tail    :: q a -> q a
-  (===)   :: q a -> q a -> Bool

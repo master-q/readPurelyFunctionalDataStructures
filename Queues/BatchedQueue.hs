@@ -19,9 +19,6 @@ instance Queue BatchedQueue where
   head (BQ (x:_) _) = x
   tail (BQ [] _) = error "empty queue"
   tail (BQ (_:f) r) = check f r
-  (===) _ _ = error "hoge"
-  {--
-  (===) a b = go (flatten a) (flatten b)
-    where go :: [a] -> [a] -> Bool
-          go x y = and $ zipWith (==) x y
---}
+  
+instance Eq a => Eq (BatchedQueue a) where
+  x == y = (flatten x) == (flatten y)

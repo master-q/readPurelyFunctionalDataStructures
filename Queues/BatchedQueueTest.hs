@@ -1,7 +1,6 @@
 module Main (main) where
 import Test.HUnit
 import qualified Queue as Q
-import Queue ((===))
 import qualified BatchedQueue as BQ
 
 e1, e2, e3 :: Int
@@ -37,7 +36,7 @@ testHead = let r = (and . zipWith (==) [e1, e1, e2, e2, e3] . map Q.head)
 -- see http://hackage.haskell.org/trac/ghc/ticket/5129
 
 testTail :: Test
-testTail = let r = (and . zipWith (===) [q0, q3, q5, q0] . map Q.tail)
+testTail = let r = (and . zipWith (==) [q0, q3, q5, q0] . map Q.tail)
                    [q1, q2, q4, q5]
            in  TestCase $ assertBool "tail failed" r
 
