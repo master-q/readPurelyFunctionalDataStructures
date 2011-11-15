@@ -23,6 +23,9 @@ insTree t ts@(t':ts') = if rank t < rank t' then t:ts
 insert :: Ord a => a -> Heap a -> Heap a
 insert x = insTree (Node 0 x [])
 
+insertAll :: Ord a => [a] -> Heap a -> Heap a
+insertAll xs ts = foldr insert ts xs
+
 merge :: Ord a => Heap a -> Heap a -> Heap a
 merge ts [] = ts
 merge [] ts = ts
@@ -36,11 +39,16 @@ removeMinTree [t] = (t, [])
 removeMinTree (t:ts) =
   let (t', ts') = removeMinTree ts
   in if root t < root t' then (t, ts) else (t', t:ts')
+removeMinTree [] = error "removeMinTree: don't call with null list."
 
 findMin :: Ord a => Heap a -> a
 findMin ts = let (t, _) = removeMinTree ts in root t
 
+-- myanswer of exercise 3.5
+findMin' :: Ord a => Heap a -> a
+findMin' ts = let (t, _) = removeMinTree ts in root t
+
 deleteMin :: Ord a => Heap a -> Heap a
 deleteMin ts =
-  let (Node _ x ts1, ts2) = removeMinTree ts
+  let (Node _ _ ts1, ts2) = removeMinTree ts
   in merge (reverse ts1) ts2

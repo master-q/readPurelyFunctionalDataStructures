@@ -9,8 +9,7 @@ main :: IO ()
 main = $(defaultMainGenerator)
 
 case_1 :: Assertion
-case_1 = do 1 @=? BH.findMin h4
-           where h1 = BH.insert 4 []
-                 h2 = BH.insert 3 h1
-                 h3 = BH.insert 1 h2
-                 h4 = BH.insert 2 h3
+case_1 = do 1 @=? (BH.findMin $ BH.insertAll [2,3,1,4] [])
+
+case_2 :: Assertion
+case_2 = do 1 @=? (BH.findMin' $ BH.insertAll [2,3,1,4] [])
