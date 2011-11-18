@@ -15,7 +15,7 @@ module BinomialHeap = struct
     else Node(r + 1, x2, t1 :: c2)
   let rec insTree t = function
     | [] -> [t]
-    | (t' :: ts' as ts) ->
+    | ((t' :: ts') as ts) ->
       if rank t < rank t' then t :: ts else insTree (link t t') ts'
   let insert x ts = insTree (Node(0, x, [])) ts
   let rec insertAll a1 a2 = match (a1, a2) with
@@ -24,7 +24,7 @@ module BinomialHeap = struct
   let rec merge a1 a2 = match (a1, a2) with
     | (ts, []) -> ts
     | ([], ts) -> ts
-    | ((t1 :: ts1' as ts1), (t2 :: ts2' as ts2)) ->
+    | (((t1 :: ts1') as ts1), ((t2 :: ts2') as ts2)) ->
       if rank t1 < rank t2 then t1 :: merge ts1' ts2
       else if rank t2 < rank t1 then t2 :: merge ts1 ts2'
       else insTree (link t1 t2) (merge ts1' ts2')
@@ -33,8 +33,8 @@ module BinomialHeap = struct
     | [t] -> (t, [])
     | (t :: ts) ->
       let (t', ts') = removeMinTree ts
-      in if root t' > root t
-	then (t', t :: ts') else (t, ts)
+      in if root t <= root t'
+	then (t, ts) else (t', t :: ts')
   let findMin ts = let (t, _) = removeMinTree ts in root t
   let deleteMin ts =
     let (Node(_, x, ts1), ts2) = removeMinTree ts
