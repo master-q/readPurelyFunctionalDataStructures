@@ -18,11 +18,12 @@ http://ocaml.jp/Lazy%20Pattern
 
 # Stream
 
-stdlib/stream.mlで定義されている。
+stdlib/stream.mlで定義されているが、
 
 http://ocaml.jp/Stream
 http://www.geocities.jp/m_hiroi/func/ocaml23.html
 
+とは内容が違う。ここではsmall_stream.mlをOCaml用に作ってみる。
 
 
 # 疑問点のリスト
