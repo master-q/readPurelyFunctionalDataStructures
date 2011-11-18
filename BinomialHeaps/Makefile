@@ -13,9 +13,9 @@ lint:
 	hlint -c *.hs
 
 test: all
-	echo "Haskell"
+	@echo "*** Haskell ***"
 	./BinomialHeapTest
-	echo "OCaml"
+	@echo "\n*** OCaml ***"
 	./binomial_heap_test_ml
 
 clean:

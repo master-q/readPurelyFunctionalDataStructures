@@ -6,10 +6,8 @@ module BinomialHeap = struct
 
   let empty = []
   let isEmpty ts = ts = []
-  let rank = function
-    | Node(r, _, _) -> r
-  let root = function
-    | Node(_, x, _) -> x
+  let rank (Node(r, _, _)) = r
+  let root (Node(_, x, _)) = x
   let link (Node(r, x1, c1) as t1) (Node(_, x2, c2) as t2) =
     if x1 <= x2 then Node(r + 1, x1, t2 :: c1)
     else Node(r + 1, x2, t1 :: c2)
@@ -36,6 +34,11 @@ module BinomialHeap = struct
       in if root t <= root t'
 	then (t, ts) else (t', t :: ts')
   let findMin ts = let (t, _) = removeMinTree ts in root t
+  (* myanswer of exercise 3.5 *)
+  let findMin' = function
+    | [] -> raise (Failure "findMin': don't call with null list.")
+    | ts -> let (t' :: ts') = map root ts
+	    in fold_left min t' ts'
   let deleteMin ts =
     let (Node(_, x, ts1), ts2) = removeMinTree ts
     in merge (rev ts1) ts2
