@@ -35,10 +35,9 @@ module BinomialHeap = struct
 	then (t, ts) else (t', t :: ts')
   let findMin ts = let (t, _) = removeMinTree ts in root t
   (* myanswer of exercise 3.5 *)
-  let findMin' = function
+  let findMin' ts = match map root ts with
     | [] -> raise (Failure "findMin': don't call with null list.")
-    | ts -> let (t' :: ts') = map root ts
-	    in fold_left min t' ts'
+    | (t' :: ts') -> fold_left min t' ts'
   let deleteMin ts =
     let (Node(_, x, ts1), ts2) = removeMinTree ts
     in merge (rev ts1) ts2
