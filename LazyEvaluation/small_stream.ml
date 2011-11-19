@@ -18,7 +18,7 @@ let drop n s =
   let rec drop' n' s' = match (n', s') with
     | (0, s'') -> s''
     | (_, lazy SSnil) -> lazy SSnil
-    | (n'', lazy (SScons(_, s'''))) -> drop' (n'' - 1) s
+    | (n'', lazy (SScons(_, s'''))) -> drop' (n'' - 1) s'''
   in lazy (drop' n s)
 let reverse s =
   let rec reverse' = function

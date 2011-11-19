@@ -4,7 +4,7 @@ open Small_stream
 let test_1 _ = let st = drop 1 (lazy (SScons(2, lazy (SScons(1, lazy SSnil)))))
 	       in match Lazy.force st with
 		 | (lazy SSnil) -> assert_equal 0 1 (* error *)
-		 | (lazy (SScons(x, _))) -> assert_equal 2 x (* why??? *)
+		 | (lazy (SScons(x, _))) -> assert_equal 1 x
 
 let suite = "Test SmallStream" >:::
   ["test_1" >:: test_1]
