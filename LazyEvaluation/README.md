@@ -23,8 +23,7 @@ stdlib/stream.mlで定義されているが、
 http://ocaml.jp/Stream
 http://www.geocities.jp/m_hiroi/func/ocaml23.html
 
-とは内容が違う。ここではsmall_stream.mlをOCaml用に作ってみる。
-
+とは内容が違う。ここではsmall_stream.mlをOCaml用に作ってみた。
 
 # 疑問点のリスト
 
@@ -32,7 +31,3 @@ http://www.geocities.jp/m_hiroi/func/ocaml23.html
 
     fun lazy f p = e (* シンタックスシュガーは以下のような意味 *)
 	fun f x = $case x of p => force e
-
-ensure
-equivalent
-ordinary
