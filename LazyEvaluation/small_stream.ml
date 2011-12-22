@@ -7,11 +7,9 @@ and 'a stream = 'a cell Lazy.t
 
 (* map *)
 
-let (++) t1 t2 =
-  let rec pp t1 t2 = match t1 with
-    | (lazy SSnil) -> t2
-    | (lazy (SScons(x, s))) -> lazy (SScons(x, pp s t2))
-  in lazy (pp t1 t2)
+let rec (++) t1 t2 = lazy (match (t1, t2) with
+  | (lazy SSnil, lazy t2) -> t2
+  | (lazy (SScons(x, s)), t2) -> SScons(x, s ++ t2))
 
 (* filter *)
 (* head *)
