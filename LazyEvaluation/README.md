@@ -31,3 +31,5 @@ http://www.geocities.jp/m_hiroi/func/ocaml23.html
 
     fun lazy f p = e (* シンタックスシュガーは以下のような意味 *)
 	fun f x = $case x of p => force e
+
+## OUnitのテストケースをCamlp4で自動列挙できるか？
