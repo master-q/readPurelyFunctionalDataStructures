@@ -77,13 +77,12 @@ let take n s =
     | (n'', lazy (SScons(x, s''))) -> lazy (SScons(x, take' (n'' - 1) s''))
   in lazy (take' n s)
 
-
-let drop n s =
-  let rec drop' n' s' = match (n', s') with
-    | (0, s'') -> s''
+let drop n s = lazy (
+  let rec drop' n s = match (n, s) with
+    | (0, s) -> s
     | (_, lazy SSnil) -> lazy SSnil
-    | (n'', lazy (SScons(_, s'''))) -> drop' (n'' - 1) s'''
-  in drop' n s
+    | (n, lazy (SScons(_, s))) -> drop' (n - 1) s
+  in drop' n s)
 
 (* splitAt *)
 (* takeWhile *)
