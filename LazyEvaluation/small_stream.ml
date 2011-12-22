@@ -20,11 +20,11 @@ let rec (++) t1 t2 = lazy (match (t1, t2) with
 (* length *)
 (* !! *)
 
-let reverse s =
-  let rec reverse' = function
+let reverse s = lazy (
+  let rec reverse' s r = match (s, r) with
     | (lazy SSnil, r) -> r
-    | (lazy (SScons(x, s)), r) -> reverse' (s, lazy (SScons(x, r)))
-  in lazy (reverse' (s, lazy SSnil))
+    | (lazy (SScons(x, s)), r) -> reverse' s (SScons(x, lazy r))
+  in reverse' s SSnil)
 
 (* *** Reducing lists (folds) *)
 
