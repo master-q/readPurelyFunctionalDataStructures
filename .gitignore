@@ -2,3 +2,4 @@
 *.o
 *.cmi
 *.cmo
+LazyEvaluation/small_stream_test
