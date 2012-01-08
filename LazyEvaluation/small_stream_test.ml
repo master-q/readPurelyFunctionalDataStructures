@@ -22,15 +22,18 @@ let test_append _ = match drop 9 (take 10 (stream_inf2 ++ stream_inf)) with
   | (lazy SSnil) -> assert_failure "stream_inf has no SSnil."
   | (lazy (SScons(x, _))) -> assert_equal 2 x
 
-let test_reverse1 _ = match reverse (reverse stream_321) with
+let test_reverse _ = match reverse (reverse stream_321) with
   | (lazy SSnil) -> assert_failure "stream has elms."
   | (lazy (SScons(x, _))) -> assert_equal 3 x
+
+let test_foldr _ = assert_equal 6(foldr (+) 0 stream_321)
 
 let suite = "Test SmallStream" >:::
   ["test_repeat" >:: test_repeat;
    "test_drop"   >:: test_drop;
    "test_take"   >:: test_take;
    "test_append" >:: test_append;
-   "test_reverse1" >:: test_reverse1]
+   "test_reverse" >:: test_reverse;
+   "test_foldr" >:: test_foldr]
 
 let _ = run_test_tt_main suite

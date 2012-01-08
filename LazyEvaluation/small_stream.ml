@@ -32,7 +32,7 @@ let foldr f z s =
   let rec foldr' f z s = match (f, z, s) with
     | (_, z, lazy SSnil) -> z
     | (f, z, lazy (SScons(x, s))) -> f x (foldr' f z s)
-  in lazy (foldr' f z s)
+  in foldr' f z s
 
 (* foldr1 *)
 
