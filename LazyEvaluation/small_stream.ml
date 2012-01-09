@@ -28,11 +28,12 @@ let reverse s = lazy (
 
 (* *** Reducing lists (folds) *)
 
-let foldr f z s =
-  let rec foldr' f z s = match (f, z, s) with
-    | (_, z, lazy SSnil) -> z
-    | (f, z, lazy (SScons(x, s))) -> f x (foldr' f z s)
-  in foldr' f z s
+(* foldl *)
+(* foldl1 *)
+
+let rec foldr f z s = match f z s with
+  | (n, SSnil) -> z
+  | (n, SScons(_, s)) -> foldr f n s
 
 (* foldr1 *)
 
