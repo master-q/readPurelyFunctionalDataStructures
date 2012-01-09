@@ -121,6 +121,10 @@ let test_maximum _ = assert_equal 3 (maximum stream_321)
 
 let test_minimum _ = assert_equal 1 (minimum stream_321)
 
+(* You should add tests for
+    scanl, scanl1, scanr, scanr1, replicate, cycle, splitAt, takeWhile,
+    dropWhile, span, break *)
+
 let suite = "Test SmallStream" >:::
   ["test_repeat"  >:: test_repeat;
    "test_drop"    >:: test_drop;

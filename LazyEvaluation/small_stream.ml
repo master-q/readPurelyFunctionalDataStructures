@@ -1,13 +1,11 @@
-(*
-http://hackage.haskell.org/packages/archive/base/latest/doc/html/Prelude.html
-http://hackage.haskell.org/packages/archive/base/latest/doc/html/Data-List.html
-*)
-
 type 'a cell = SSnil | SScons of 'a * 'a stream
 and 'a stream = 'a cell Lazy.t
 
 exception Empty_stream
 
+(*
+http://hackage.haskell.org/packages/archive/base/latest/doc/html/Prelude.html
+*)
 (* *** List operations *)
 let rec map f s = lazy (match s with
   | (lazy SSnil) -> SSnil
@@ -119,24 +117,27 @@ let minimum s =
 
 (* *** Building lists *)
 (* *** scan *)
+let rec scanl f q ls =
+  lazy (SScons(q, match ls with
+    | (lazy SSnil)           -> lazy SSnil
+    | (lazy (SScons(x, xs))) -> scanl f (f q x) xs))
 
-(* scanl *)
-(* scanl1 *)
-(* scanr *)
-(* scanr1 *)
+let scanl1 f s = match s with
+  | (lazy (SScons(x, s))) -> scanl f x s
+  | (lazy SSnil)          -> lazy SSnil
 
-(* *** Infinite lists *)
+let rec scanr f q s = lazy(match s with
+  | (lazy SSnil)           -> SScons(q, lazy SSnil)
+  | (lazy (SScons(x, xs))) -> let qs = scanr f q xs
+			      in SScons(f x (head qs), qs))
 
-let rec iterate f x = lazy (SScons(x, iterate f (f x)))
-
-let repeat x = let rec xs = lazy (SScons(x, xs))
-	       in xs
-
-(* replicate *)
-(* cycle *)
+let rec scanr1 f s = lazy(match s with
+  | (lazy SSnil)                   -> SSnil
+  | (lazy (SScons(x, lazy SSnil))) -> SScons(x, lazy SSnil)
+  | (lazy (SScons(x, xs)))         -> let qs = scanr1 f xs
+				      in SScons(f x (head qs), qs))
 
 (* *** Sublists *)
-
 let rec take n s = lazy (match (n, s) with
   | (0, _) -> SSnil
   | (_, lazy SSnil) -> SSnil
@@ -149,11 +150,37 @@ let drop n s = lazy (
     | (n, lazy (SScons(_, s))) -> drop' (n - 1) s
   in drop' n s)
 
-(* splitAt *)
-(* takeWhile *)
-(* dropWhile *)
-(* span *)
-(* break *)
+let splitAt n xs = (take n xs, drop n xs)
+
+let rec takeWhile p s = lazy(match s with
+  | (lazy SSnil)           -> SSnil
+  | (lazy (SScons(x, xs))) ->
+    if p x then SScons(x, takeWhile p xs) else SSnil)
+
+let rec dropWhile p s = match s with
+  | (lazy SSnil)                -> SSnil
+  | (lazy (SScons(x, xs) as s)) -> if p x then dropWhile p xs else s
+
+let rec span p s = match s with
+  | ((lazy SSnil) as e)    -> (e, e)
+  | (lazy (SScons(x, xs))) ->
+    if p x then let (ys, zs) = span p xs in (lazy (SScons(x, ys)), zs)
+    else (lazy SSnil, xs)
+
+let ($) f g x = f (g x) (* like Haskel's (.) *)
+let break p = span (not $ p)
+
+(* *** Infinite lists *)
+let rec iterate f x = lazy (SScons(x, iterate f (f x)))
+
+let repeat x = let rec xs = lazy (SScons(x, xs))
+	       in xs
+
+let replicate n x = take n (repeat x)
+
+let rec cycle s = match s with
+  | (lazy SSnil) -> raise Empty_stream
+  | s            -> s ++ cycle s
 
 (* *** Searching lists *)
 
@@ -177,6 +204,9 @@ let drop n s = lazy (
 (* unlines *)
 (* unwords *)
 
+(*
+http://hackage.haskell.org/packages/archive/base/latest/doc/html/Data-List.html
+*)
 (* *** Unfolding *)
 
 (* unfoldr *)
