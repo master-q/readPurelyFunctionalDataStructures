@@ -9,21 +9,52 @@ and 'a stream = 'a cell Lazy.t
 exception Empty_stream
 
 (* *** List operations *)
-
-(* map *)
+let rec map f s = lazy (match s with
+  | (lazy SSnil) -> SSnil
+  | (lazy (SScons(x, s))) -> SScons(f x, map f s))
 
 let rec (++) t1 t2 = lazy (match (t1, t2) with
   | (lazy SSnil, lazy t2) -> t2
   | (lazy (SScons(x, s)), t2) -> SScons(x, s ++ t2))
 
-(* filter *)
-(* head *)
-(* last *)
-(* tail *)
-(* init *)
-(* null *)
-(* length *)
-(* !! *)
+let rec filter f s = lazy (match s with
+  | (lazy SSnil) -> SSnil
+  | (lazy (SScons(x, s))) ->
+    if f x then SScons(x, filter f s) else Lazy.force (filter f s))
+
+let head s = match s with
+  | (lazy (SScons(x, _))) -> x
+  | (lazy SSnil) -> raise Empty_stream
+
+let rec last s = match s with
+  | (lazy (SScons(x, lazy SSnil))) -> x
+  | (lazy (SScons(x, s)))          -> last s
+  | (lazy SSnil)                   -> raise Empty_stream
+
+let tail s = match s with
+  | (lazy (SScons(x, s))) -> s
+  | (lazy SSnil)          -> raise Empty_stream
+
+let rec init s = lazy(match s with
+  | (lazy (SScons(_, lazy SSnil))) -> SSnil
+  | (lazy (SScons(x, s)))          -> SScons(x, init s)
+  | (lazy SSnil)                   -> raise Empty_stream)
+
+let null = function
+  | (lazy SSnil)          -> true
+  | (lazy (SScons(_, _))) -> false
+
+let length s =
+  let rec length s a = match s with
+    | (lazy SSnil) -> a
+    | (lazy (SScons(_, s))) -> length s (a + 1)
+  in length s 0
+
+let rec (!!) s n = match (s, n) with
+  | (_, n) when n < 0        -> raise Empty_stream
+  | (lazy SSnil, _)          -> raise Empty_stream
+  | (lazy (SScons(x, _)), 0) -> x
+  | (lazy (SScons(_, s)), n) -> (!!) s (n - 1)
 
 let reverse s = lazy (
   let rec reverse' s r = match (s, r) with
@@ -32,7 +63,6 @@ let reverse s = lazy (
   in reverse' s SSnil)
 
 (* *** Reducing lists (folds) *)
-
 let rec foldl f z s = match s with
   | (lazy SSnil)          -> z
   | (lazy (SScons(x, s))) -> foldl f (f z x) s
