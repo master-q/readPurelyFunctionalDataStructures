@@ -100,11 +100,22 @@ let all f s = sand (map f s)
 let sum = foldl (+) 0
 let sum' = foldl (+.) 0.0
 
-(* product *)
-(* concat *)
-(* concatMap *)
-(* maximum *)
-(* minimum *)
+let product = foldl ( * ) 1
+let product' = foldl ( *.) 1.0
+
+let rec concat ss = match ss with
+  | (lazy SSnil) -> lazy SSnil
+  | (lazy (SScons(x, ss))) -> x ++ (concat ss)
+
+let concatMap f s = concat (map f s)
+
+let maximum s =
+  let max a b = if a > b then a else b
+  in foldl1 max s
+
+let minimum s =
+  let min a b = if a < b then a else b
+  in foldl1 min s
 
 (* *** Building lists *)
 (* *** scan *)

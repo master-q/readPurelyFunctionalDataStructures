@@ -12,6 +12,8 @@ let stream_ftf =
 let stream_inf = repeat 1
 let stream_inf2 = repeat 2
 let stream_inc = iterate ((+) 1) 0
+let sstream_321_933 =
+  lazy (SScons(stream_321, lazy (SScons(stream_933, lazy SSnil))))
 
 let test_repeat _ = match drop 100000 stream_inf with
   | (lazy SSnil) -> assert_failure "stream_inf has no SSnil."
@@ -107,6 +109,18 @@ let test_all _ =
   assert_bool "stream has cell 9" (not (all ((=) 3) stream_933));
   assert_bool "stream has cells > 4" (all ((>) 4) stream_321)
 
+let test_product _ = assert_equal 81 (product stream_933)
+
+let test_concat _ = assert_equal 21 (sum (concat sstream_321_933))
+
+let test_concatMap _ =
+  let f x = lazy (SScons(x + 1, lazy (SScons(x + 2, lazy SSnil))))
+  in assert_equal 21 (sum (concatMap f stream_321))
+
+let test_maximum _ = assert_equal 3 (maximum stream_321)
+
+let test_minimum _ = assert_equal 1 (minimum stream_321)
+
 let suite = "Test SmallStream" >:::
   ["test_repeat"  >:: test_repeat;
    "test_drop"    >:: test_drop;
@@ -136,10 +150,15 @@ let suite = "Test SmallStream" >:::
    "test_length"  >:: test_length;
    "test_index"   >:: test_index;
    "test_index_2" >:: test_index_2;
-   "test_sand" >:: test_sand;
-   "test_sor" >:: test_sor;
-   "test_any" >:: test_any;
-   "test_all" >:: test_all;
+   "test_sand"    >:: test_sand;
+   "test_sor"     >:: test_sor;
+   "test_any"     >:: test_any;
+   "test_all"     >:: test_all;
+   "test_product" >:: test_product;
+   "test_concat"  >:: test_concat;
+   "test_concatMap" >:: test_concatMap;
+   "test_maximum" >:: test_maximum;
+   "test_minimum" >:: test_minimum;
   ]
 
 let _ = run_test_tt_main suite
