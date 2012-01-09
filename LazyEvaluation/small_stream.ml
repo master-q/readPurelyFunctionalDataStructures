@@ -31,9 +31,13 @@ let reverse s = lazy (
 (* foldl *)
 (* foldl1 *)
 
-let rec foldr f z s = match f z s with
-  | (n, SSnil) -> z
-  | (n, SScons(_, s)) -> foldr f n s
+let lift_foldr f a b = f a (Lazy.force b)
+
+let foldr f z s =
+  let rec foldr' f z s = lazy (match s with
+    | (lazy SSnil) -> z
+    | (lazy (SScons(x, s))) -> f x (foldr' f z s))
+  in Lazy.force (foldr' f z s)
 
 (* foldr1 *)
 
@@ -60,7 +64,8 @@ let rec foldr f z s = match f z s with
 
 (* *** Infinite lists *)
 
-(* iterate *)
+let rec iterate f x = lazy (SScons(x, iterate f (f x)))
+
 let repeat x = let rec xs = lazy (SScons(x, xs))
 	       in xs
 
