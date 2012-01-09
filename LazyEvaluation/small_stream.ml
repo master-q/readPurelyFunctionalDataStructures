@@ -87,11 +87,15 @@ let foldr1 f s =
   in Lazy.force (foldr1 f s)
 
 (* *** Special folds *)
-
 (* and *)
+let sand = foldl (&&) true
+
 (* or *)
-(* any *)
-(* all *)
+let sor = foldl (||) false
+
+let any f s = sor (map f s)
+
+let all f s = sand (map f s)
 
 let sum = foldl (+) 0
 let sum' = foldl (+.) 0.0

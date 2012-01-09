@@ -5,6 +5,10 @@ let stream_321 =
   lazy (SScons(3, (lazy (SScons(2, lazy (SScons(1, lazy SSnil)))))))
 let stream_933 =
   lazy (SScons(9, (lazy (SScons(3, lazy (SScons(3, lazy SSnil)))))))
+let stream_ttt =
+  lazy (SScons(true, (lazy (SScons(true, lazy (SScons(true, lazy SSnil)))))))
+let stream_ftf =
+  lazy (SScons(false, (lazy (SScons(true, lazy (SScons(false, lazy SSnil)))))))
 let stream_inf = repeat 1
 let stream_inf2 = repeat 2
 let stream_inc = iterate ((+) 1) 0
@@ -91,6 +95,18 @@ let test_index_2 _ =
   assert_raises Empty_stream
     (fun _ -> assert_equal 0 ((!!) stream_321 3))
 
+let test_sand _ = assert_bool "stream has true cell only" (sand stream_ttt)
+
+let test_sor _ = assert_bool "stream has false cell only" (sor stream_ftf)
+
+let test_any _ =
+  assert_bool "stream does not have 4" (not (any ((=) 4) stream_321));
+  assert_bool "stream has cells < 2" (any ((>) 2) stream_321)
+
+let test_all _ =
+  assert_bool "stream has cell 9" (not (all ((=) 3) stream_933));
+  assert_bool "stream has cells > 4" (all ((>) 4) stream_321)
+
 let suite = "Test SmallStream" >:::
   ["test_repeat"  >:: test_repeat;
    "test_drop"    >:: test_drop;
@@ -120,6 +136,10 @@ let suite = "Test SmallStream" >:::
    "test_length"  >:: test_length;
    "test_index"   >:: test_index;
    "test_index_2" >:: test_index_2;
+   "test_sand" >:: test_sand;
+   "test_sor" >:: test_sor;
+   "test_any" >:: test_any;
+   "test_all" >:: test_all;
   ]
 
 let _ = run_test_tt_main suite
