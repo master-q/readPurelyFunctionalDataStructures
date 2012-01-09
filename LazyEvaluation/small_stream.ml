@@ -1,7 +1,12 @@
-(* http://hackage.haskell.org/packages/archive/base/latest/doc/html/Prelude.html *)
+(*
+http://hackage.haskell.org/packages/archive/base/latest/doc/html/Prelude.html
+http://hackage.haskell.org/packages/archive/base/latest/doc/html/Data-List.html
+*)
 
 type 'a cell = SSnil | SScons of 'a * 'a stream
 and 'a stream = 'a cell Lazy.t
+
+exception Empty_stream
 
 (* *** List operations *)
 
@@ -28,18 +33,28 @@ let reverse s = lazy (
 
 (* *** Reducing lists (folds) *)
 
-(* foldl *)
-(* foldl1 *)
+let rec foldl f z s = match s with
+  | (lazy SSnil)          -> z
+  | (lazy (SScons(x, s))) -> foldl f (f z x) s
+
+let foldl1 f s = match s with
+  | (lazy SSnil)          -> raise Empty_stream
+  | (lazy (SScons(x, s))) -> foldl f x s
 
 let lift_foldr f a b = f a (Lazy.force b)
 
 let foldr f z s =
   let rec foldr' f z s = lazy (match s with
-    | (lazy SSnil) -> z
+    | (lazy SSnil)          -> z
     | (lazy (SScons(x, s))) -> f x (foldr' f z s))
   in Lazy.force (foldr' f z s)
 
-(* foldr1 *)
+let foldr1 f s =
+  let rec foldr1 f s = lazy (match s with
+    | (lazy (SScons(x, lazy SSnil))) -> x
+    | (lazy (SScons(x, s)))          -> f x (foldr1 f s)
+    | _                              -> raise Empty_stream)
+  in Lazy.force (foldr1 f s)
 
 (* *** Special folds *)
 
@@ -47,7 +62,10 @@ let foldr f z s =
 (* or *)
 (* any *)
 (* all *)
-(* sum *)
+
+let sum = foldl (+) 0
+let sum' = foldl (+.) 0.0
+
 (* product *)
 (* concat *)
 (* concatMap *)
@@ -113,3 +131,7 @@ let drop n s = lazy (
 (* words *)
 (* unlines *)
 (* unwords *)
+
+(* *** Unfolding *)
+
+(* unfoldr *)
