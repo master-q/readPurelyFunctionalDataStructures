@@ -178,9 +178,9 @@ let repeat x = let rec xs = lazy (SScons(x, xs))
 
 let replicate n x = take n (repeat x)
 
-let rec cycle s = match s with
-  | (lazy SSnil) -> raise Empty_stream
-  | s            -> s ++ cycle s
+let rec cycle s = lazy(match s with
+  | (lazy SSnil)           -> raise Empty_stream
+  | (lazy (SScons(x, xs))) -> SScons(x, xs ++ cycle s))
 
 (* *** Searching lists *)
 

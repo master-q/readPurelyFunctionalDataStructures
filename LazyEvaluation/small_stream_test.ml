@@ -121,9 +121,20 @@ let test_maximum _ = assert_equal 3 (maximum stream_321)
 
 let test_minimum _ = assert_equal 1 (minimum stream_321)
 
+let test_scanl _ = assert_equal 22 (sum (scanl (+) 2 stream_321))
+
+let test_scanl1 _ = assert_equal 14 (sum (scanl1 (+) stream_321))
+
+let test_scanr _ = assert_equal 18 (sum (scanr (+) 2 stream_321))
+
+let test_scanr1 _ = assert_equal 10 (sum (scanr1 (+) stream_321))
+
+let test_replicate _ = assert_equal 10 (sum (replicate 10 1))
+
+let test_cycle _ = assert_equal 21 (sum (take 10 (cycle stream_321)))
+
 (* You should add tests for
-    scanl, scanl1, scanr, scanr1, replicate, cycle, splitAt, takeWhile,
-    dropWhile, span, break *)
+    splitAt, takeWhile, dropWhile, span, break *)
 
 let suite = "Test SmallStream" >:::
   ["test_repeat"  >:: test_repeat;
@@ -163,6 +174,12 @@ let suite = "Test SmallStream" >:::
    "test_concatMap" >:: test_concatMap;
    "test_maximum" >:: test_maximum;
    "test_minimum" >:: test_minimum;
+   "test_scanl"   >:: test_scanl;
+   "test_scanl1"  >:: test_scanl1;
+   "test_scanr"   >:: test_scanr;
+   "test_scanr1"  >:: test_scanr1;
+   "test_replicate" >:: test_replicate;
+   "test_cycle"   >:: test_cycle;
   ]
 
 let _ = run_test_tt_main suite
