@@ -161,13 +161,47 @@ let test_notElem _ =
 let test_lookup _ = let alist = map (fun x -> (x, x + 1)) stream_inc
 		    in assert_equal (Some 11) (lookup 10 alist)
 
-let test_zip _ = assert_bool "TODO" false
-let test_zip3 _ = assert_bool "TODO" false
-let test_zipWith _ = assert_bool "TODO" false
-let test_zipWith3 _ = assert_bool "TODO" false
-let test_unzip _ = assert_bool "TODO" false
-let test_unzip3 _ = assert_bool "TODO" false
-let test_unfoldr _ = assert_bool "TODO" false
+let test_zip _ = let sz = zip stream_inc stream_321 in
+		 assert_equal 3 (length sz);
+		 assert_equal (Some 1) (lookup 2 sz)
+
+let test_zip3 _ = let sz = zip3 stream_inc stream_inf stream_321 in
+		  let sv = map (fun (a,b,c) -> a + b + c) sz in
+		  assert_equal 3 (length sz);
+		  assert_equal 4 ((!!) sv 0);
+		  assert_equal 4 ((!!) sv 1);
+		  assert_equal 4 ((!!) sv 2)
+
+let test_zipWith _ = let s = zipWith (+) stream_inc stream_933 in
+		     assert_equal 9 ((!!) s 0);
+		     assert_equal 4 ((!!) s 1);
+		     assert_equal 5 ((!!) s 2)
+
+let test_zipWith3 _ =
+  let s = zipWith3 (fun a b c -> a + b + c) stream_933 stream_inf stream_inc in
+  assert_equal 10 ((!!) s 0);
+  assert_equal 5 ((!!) s 1);
+  assert_equal 6 ((!!) s 2)
+
+let test_unzip _ = let (a, b) = unzip (take 10 (zip stream_inc stream_inf)) in
+		   assert_equal 45 (sum a);
+		   assert_equal 10 (sum b)
+
+let test_unzip3 _ =
+  let (a, b, c) = unzip3 (take 10 (zip3 stream_inc stream_inf stream_inf2)) in
+  assert_equal 45 (sum a);
+  assert_equal 10 (sum b);
+  assert_equal 20 (sum c)
+
+let test_unfoldr _ =
+  let f b = if b = 0 then None else Some (b, b - 1) in
+  let s = unfoldr f 5 in
+  assert_equal 5 (length s);
+  assert_equal 5 ((!!) s 0);
+  assert_equal 4 ((!!) s 1);
+  assert_equal 3 ((!!) s 2);
+  assert_equal 2 ((!!) s 3);
+  assert_equal 1 ((!!) s 4)
 
 let suite = "Test SmallStream" >:::
   ["test_repeat"  >:: test_repeat;

@@ -210,9 +210,9 @@ let rec zipWith f a b = lazy(match (a, b) with
     SScons(f a b, zipWith f ass bss)
   | (_, _) -> SSnil)
 
-let rec zipWith f a b c = lazy(match (a, b, c) with
+let rec zipWith3 f a b c = lazy(match (a, b, c) with
   | (lazy (SScons(a, ass)), lazy (SScons(b, bss)), lazy (SScons(c, css))) ->
-    SScons(f a b c, zipWith f ass bss css)
+    SScons(f a b c, zipWith3 f ass bss css)
   | (_, _, _) -> SSnil)
 
 let unzip s =
