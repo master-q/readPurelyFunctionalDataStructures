@@ -185,10 +185,14 @@ let rec cycle s = lazy(match s with
   | (lazy (SScons(x, xs))) -> SScons(x, xs ++ cycle s))
 
 (* *** Searching lists *)
+let elem x = any ((=) x)
 
-(* elem *)
-(* notElem *)
-(* lookup *)
+let notElem x = all ((<>) x)
+
+let rec lookup k s = match s with
+  | (lazy SSnil) -> None
+  | (lazy (SScons((x, y), xys))) ->
+    if k = x then Some y else lookup k xys
 
 (* *** Zipping and unzipping lists *)
 

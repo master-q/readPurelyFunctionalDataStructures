@@ -150,6 +150,17 @@ let test_break _ = let (a, b) = break ((<) 4) (stream_321 ++ stream_933) in
 		   assert_equal 6 (sum a);
 		   assert_equal 15 (sum b)
 
+let test_elem _ =
+  assert_bool "should find 3 in stream_321" (elem 3 stream_321);
+  assert_bool "should not find 1 in stream_933" (not (elem 1 stream_933))
+
+let test_notElem _ =
+  assert_bool "should find 3 in stream_321" (not (notElem 3 stream_321));
+  assert_bool "should not find 1 in stream_933" (notElem 1 stream_933)
+
+let test_lookup _ = let alist = map (fun x -> (x, x + 1)) stream_inc
+		    in assert_equal (Some 11) (lookup 10 alist)
+
 let suite = "Test SmallStream" >:::
   ["test_repeat"  >:: test_repeat;
    "test_drop"    >:: test_drop;
@@ -199,6 +210,9 @@ let suite = "Test SmallStream" >:::
    "test_dropWhile" >:: test_dropWhile;
    "test_span"    >:: test_span;
    "test_break"   >:: test_break;
+   "test_elem"    >:: test_elem;
+   "test_notElem" >:: test_notElem;
+   "test_lookup"  >:: test_lookup;
   ]
 
 let _ = run_test_tt_main suite
