@@ -157,14 +157,16 @@ let rec takeWhile p s = lazy(match s with
   | (lazy (SScons(x, xs))) ->
     if p x then SScons(x, takeWhile p xs) else SSnil)
 
-let rec dropWhile p s = match s with
+let rec dropWhile p s = lazy(match s with
   | (lazy SSnil)                -> SSnil
-  | (lazy (SScons(x, xs) as s)) -> if p x then dropWhile p xs else s
+  | (lazy (SScons(x, xs) as s)) ->
+    if p x then Lazy.force (dropWhile p xs) else s)
 
-let rec span p s = match s with
-  | ((lazy SSnil) as e)    -> (e, e)
-  | (lazy (SScons(x, xs))) ->
-    if p x then let (ys, zs) = span p xs in (lazy (SScons(x, ys)), zs)
+let rec span p xs = match xs with
+  | (lazy SSnil)    -> (xs, xs)
+  | (lazy (SScons(x, xs'))) ->
+    if p x then let (ys, zs) = span p xs'
+		in (lazy (SScons(x, ys)), zs)
     else (lazy SSnil, xs)
 
 let ($) f g x = f (g x) (* like Haskel's (.) *)

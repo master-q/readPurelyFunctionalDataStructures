@@ -133,8 +133,22 @@ let test_replicate _ = assert_equal 10 (sum (replicate 10 1))
 
 let test_cycle _ = assert_equal 21 (sum (take 10 (cycle stream_321)))
 
-(* You should add tests for
-    splitAt, takeWhile, dropWhile, span, break *)
+let test_splitAt _ = let (a, b) = splitAt 2 stream_321 in
+		     assert_equal 5 (sum a);
+		     assert_equal 1 (sum b)
+
+let test_takeWhile _ = assert_equal 45 (sum (takeWhile ((>) 10) stream_inc))
+
+let test_dropWhile _ =
+  assert_equal 145 (sum (take 10 (dropWhile ((>) 10) stream_inc)))
+
+let test_span _ = let (a, b) = span ((<) 2) (stream_933 ++ stream_321) in
+		  assert_equal 18 (sum a);
+		  assert_equal 3 (sum b)
+
+let test_break _ = let (a, b) = break ((<) 4) (stream_321 ++ stream_933) in
+		   assert_equal 6 (sum a);
+		   assert_equal 15 (sum b)
 
 let suite = "Test SmallStream" >:::
   ["test_repeat"  >:: test_repeat;
@@ -180,6 +194,11 @@ let suite = "Test SmallStream" >:::
    "test_scanr1"  >:: test_scanr1;
    "test_replicate" >:: test_replicate;
    "test_cycle"   >:: test_cycle;
+   "test_splitAt" >:: test_splitAt;
+   "test_takeWhile" >:: test_takeWhile;
+   "test_dropWhile" >:: test_dropWhile;
+   "test_span"    >:: test_span;
+   "test_break"   >:: test_break;
   ]
 
 let _ = run_test_tt_main suite
