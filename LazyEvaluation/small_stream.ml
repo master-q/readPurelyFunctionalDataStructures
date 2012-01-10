@@ -195,24 +195,43 @@ let rec lookup k s = match s with
     if k = x then Some y else lookup k xys
 
 (* *** Zipping and unzipping lists *)
+let rec zip a b = lazy(match (a, b) with
+  | (lazy (SScons(a, ass)), lazy (SScons(b, bss))) ->
+    SScons((a, b), zip ass bss)
+  | (_, _) -> SSnil)
 
-(* zip *)
-(* zip3 *)
-(* zipWith *)
-(* zipWith3 *)
-(* unzip *)
-(* unzip3 *)
+let rec zip3 a b c = lazy(match (a, b, c) with
+  | (lazy (SScons(a, ass)), lazy (SScons(b, bss)), lazy (SScons(c, css))) ->
+    SScons((a, b, c), zip3 ass bss css)
+  | (_, _, _) -> SSnil)
+
+let rec zipWith f a b = lazy(match (a, b) with
+  | (lazy (SScons(a, ass)), lazy (SScons(b, bss))) ->
+    SScons(f a b, zipWith f ass bss)
+  | (_, _) -> SSnil)
+
+let rec zipWith f a b c = lazy(match (a, b, c) with
+  | (lazy (SScons(a, ass)), lazy (SScons(b, bss)), lazy (SScons(c, css))) ->
+    SScons(f a b c, zipWith f ass bss css)
+  | (_, _, _) -> SSnil)
+
+let unzip s =
+  let f (a, b) (ass, bss) = (lazy (SScons(a, ass)), lazy (SScons(b, bss)))
+  in foldr (lift_foldr f) (lazy SSnil, lazy SSnil) s
+
+let unzip3 s =
+  let f (a, b, c) (ass, bss, css) =
+    (lazy (SScons(a, ass)), lazy (SScons(b, bss)), lazy (SScons(c, css)))
+  in foldr (lift_foldr f) (lazy SSnil, lazy SSnil, lazy SSnil) s
 
 (* *** Functions on strings *)
-
-(* lines *)
-(* words *)
-(* unlines *)
-(* unwords *)
+(* OCaml's string isn't list or lazy stream *)
+(* Then, we can't implement lines, words, unlines, unwords *)
 
 (*
 http://hackage.haskell.org/packages/archive/base/latest/doc/html/Data-List.html
 *)
 (* *** Unfolding *)
-
-(* unfoldr *)
+let rec unfoldr f b = lazy(match f b with
+  | Some (a, new_b) -> SScons(a, unfoldr f new_b)
+  | None            -> SSnil)

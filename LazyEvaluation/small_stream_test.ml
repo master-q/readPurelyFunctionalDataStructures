@@ -161,6 +161,14 @@ let test_notElem _ =
 let test_lookup _ = let alist = map (fun x -> (x, x + 1)) stream_inc
 		    in assert_equal (Some 11) (lookup 10 alist)
 
+let test_zip _ = assert_bool "TODO" false
+let test_zip3 _ = assert_bool "TODO" false
+let test_zipWith _ = assert_bool "TODO" false
+let test_zipWith3 _ = assert_bool "TODO" false
+let test_unzip _ = assert_bool "TODO" false
+let test_unzip3 _ = assert_bool "TODO" false
+let test_unfoldr _ = assert_bool "TODO" false
+
 let suite = "Test SmallStream" >:::
   ["test_repeat"  >:: test_repeat;
    "test_drop"    >:: test_drop;
@@ -213,6 +221,13 @@ let suite = "Test SmallStream" >:::
    "test_elem"    >:: test_elem;
    "test_notElem" >:: test_notElem;
    "test_lookup"  >:: test_lookup;
+   "test_zip"     >:: test_zip;
+   "test_zip3"    >:: test_zip3;
+   "test_zipWith" >:: test_zipWith;
+   "test_zipWith3" >:: test_zipWith3;
+   "test_unzip"   >:: test_unzip;
+   "test_unzip3"  >:: test_unzip3;
+   "test_unfoldr"  >:: test_unfoldr;
   ]
 
 let _ = run_test_tt_main suite
