@@ -3,4 +3,9 @@
 *.cmi
 *.cmo
 *.annot
+*.cmx
+*.opt
+*.omc
+.omakedb
+.omakedb.lock
 LazyEvaluation/small_stream_test
