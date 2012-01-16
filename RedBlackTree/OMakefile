@@ -1,0 +1,24 @@
+.PHONY: all clean check
+
+USE_OCAMLFIND = true
+
+OCAMLPACKS[] =
+   oUnit
+
+OCAMLFLAGS += -annot
+
+FILES[] =
+   redblack_tree_test
+   redblack_tree
+
+PROGRAM = redblack_tree_test
+
+.DEFAULT: all
+all: $(OCamlProgram $(PROGRAM), $(FILES))
+
+clean:
+	rm -f *~ *.opt *.cmi *.cmx *.o *.omc *.cma *.cmxa *.annot
+	rm -f $(PROGRAM)
+
+check: all
+	./$(PROGRAM)
