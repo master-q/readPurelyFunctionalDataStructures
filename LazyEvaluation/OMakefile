@@ -5,6 +5,8 @@ USE_OCAMLFIND = true
 OCAMLPACKS[] =
    oUnit
 
+OCAMLFLAGS += -annot
+
 FILES[] =
    small_stream_test
    small_stream
@@ -15,7 +17,7 @@ PROGRAM = small_stream_test
 all: $(OCamlProgram $(PROGRAM), $(FILES))
 
 clean:
-	rm -f *~ *.opt *.cmi *.cmx *.o *.omc *.cma *.cmxa
+	rm -f *~ *.opt *.cmi *.cmx *.o *.omc *.cma *.cmxa *.annot
 	rm -f small_stream_test
 
 check: all
