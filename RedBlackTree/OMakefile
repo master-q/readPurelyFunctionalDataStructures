@@ -6,6 +6,8 @@ OCAMLPACKS[] =
    oUnit
 
 OCAMLFLAGS += -annot
+NATIVE_ENABLED = $(OCAMLOPT_EXISTS)
+BYTE_ENABLED = $(not $(OCAMLOPT_EXISTS))
 
 FILES[] =
    redblack_tree_testbase
