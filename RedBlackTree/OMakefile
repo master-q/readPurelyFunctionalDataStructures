@@ -13,12 +13,23 @@ FILES[] =
 
 PROGRAM = redblack_tree_test
 
+FILES_A[] =
+   redblack_tree_test_ex3_10a
+   redblack_tree_ex3_10a
+
+PROGRAM_A = redblack_tree_test_ex3_10a
+
 .DEFAULT: all
-all: $(OCamlProgram $(PROGRAM), $(FILES))
+all: $(OCamlProgram $(PROGRAM), $(FILES)) $(OCamlProgram $(PROGRAM_A), $(FILES_A))
 
 clean:
 	rm -f *~ *.opt *.cmi *.cmx *.o *.omc *.cma *.cmxa *.annot
-	rm -f $(PROGRAM)
+	rm -f $(PROGRAM) $(PROGRAM_A)
 
 check: all
 	./$(PROGRAM)
+	./$(PROGRAM)
+	./$(PROGRAM)
+	./$(PROGRAM_A)
+	./$(PROGRAM_A)
+	./$(PROGRAM_A)
