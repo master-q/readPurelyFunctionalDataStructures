@@ -8,12 +8,14 @@ OCAMLPACKS[] =
 OCAMLFLAGS += -annot
 
 FILES[] =
+   redblack_tree_testbase
    redblack_tree_test
    redblack_tree
 
 PROGRAM = redblack_tree_test
 
 FILES_A[] =
+   redblack_tree_testbase
    redblack_tree_test_ex3_10a
    redblack_tree_ex3_10a
 
