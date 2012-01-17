@@ -6,8 +6,8 @@ OCAMLPACKS[] =
    oUnit
 
 OCAMLFLAGS += -annot
-NATIVE_ENABLED = $(OCAMLOPT_EXISTS)
-BYTE_ENABLED = $(not $(OCAMLOPT_EXISTS))
+#NATIVE_ENABLED = $(OCAMLOPT_EXISTS)
+#BYTE_ENABLED = $(not $(OCAMLOPT_EXISTS))
 
 FILES[] =
    redblack_tree_testbase
@@ -16,6 +16,13 @@ FILES[] =
 
 PROGRAM = redblack_tree_test
 
+FILES_SORT[] =
+   redblack_tree_testbase
+   redblack_tree_test_sorted
+   redblack_tree
+
+PROGRAM_SORT = redblack_tree_test_sorted
+
 FILES_A[] =
    redblack_tree_testbase
    redblack_tree_test_ex3_10a
@@ -23,8 +30,15 @@ FILES_A[] =
 
 PROGRAM_A = redblack_tree_test_ex3_10a
 
+FILES_A_SORT[] =
+   redblack_tree_testbase
+   redblack_tree_test_ex3_10a_sorted
+   redblack_tree_ex3_10a
+
+PROGRAM_A_SORT = redblack_tree_test_ex3_10a_sorted
+
 .DEFAULT: all
-all: $(OCamlProgram $(PROGRAM), $(FILES)) $(OCamlProgram $(PROGRAM_A), $(FILES_A))
+all: $(OCamlProgram $(PROGRAM), $(FILES)) $(OCamlProgram $(PROGRAM_SORT), $(FILES_SORT)) $(OCamlProgram $(PROGRAM_A), $(FILES_A)) $(OCamlProgram $(PROGRAM_A_SORT), $(FILES_A_SORT))
 
 clean:
 	rm -f *~ *.opt *.cmi *.cmx *.o *.omc *.cma *.cmxa *.annot
@@ -37,3 +51,9 @@ check: all
 	./$(PROGRAM_A)
 	./$(PROGRAM_A)
 	./$(PROGRAM_A)
+	./$(PROGRAM_SORT)
+	./$(PROGRAM_SORT)
+	./$(PROGRAM_SORT)
+	./$(PROGRAM_A_SORT)
+	./$(PROGRAM_A_SORT)
+	./$(PROGRAM_A_SORT)

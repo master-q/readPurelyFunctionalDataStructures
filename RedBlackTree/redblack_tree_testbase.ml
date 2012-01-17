@@ -20,7 +20,3 @@ let test_rand fi fm te _ =
 let test_sorted fi fm te _ =
   let rbt = insert_times_incl fi te 1000000 0 in
   assert (fm 0 rbt)
-
-let suite fi fm te = "Test RedBlackTree" >:::
-  ["test_rand" >:: (test_rand fi fm te);
-   "test_sorted" >:: (test_sorted fi fm te);]
