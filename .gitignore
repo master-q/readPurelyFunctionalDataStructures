@@ -9,3 +9,5 @@
 .omakedb
 .omakedb.lock
 LazyEvaluation/small_stream_test
+RedBlackTree/redblack_tree_test
+RedBlackTree/redblack_tree_test_ex3_10a
