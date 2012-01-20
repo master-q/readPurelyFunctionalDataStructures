@@ -1,4 +1,4 @@
-.PHONY: all clean check
+.PHONY: all clean check check_rand check_sort
 
 USE_OCAMLFIND = true
 
@@ -37,23 +37,45 @@ FILES_A_SORT[] =
 
 PROGRAM_A_SORT = redblack_tree_test_ex3_10a_sorted
 
+FILES_B[] =
+   redblack_tree_testbase
+   redblack_tree_test_ex3_10b
+   redblack_tree_ex3_10b
+
+PROGRAM_B = redblack_tree_test_ex3_10b
+
+FILES_B_SORT[] =
+   redblack_tree_testbase
+   redblack_tree_test_ex3_10b_sorted
+   redblack_tree_ex3_10b
+
+PROGRAM_B_SORT = redblack_tree_test_ex3_10b_sorted
+
 .DEFAULT: all
-all: $(OCamlProgram $(PROGRAM), $(FILES)) $(OCamlProgram $(PROGRAM_SORT), $(FILES_SORT)) $(OCamlProgram $(PROGRAM_A), $(FILES_A)) $(OCamlProgram $(PROGRAM_A_SORT), $(FILES_A_SORT))
+all: $(OCamlProgram $(PROGRAM), $(FILES)) $(OCamlProgram $(PROGRAM_SORT), $(FILES_SORT)) $(OCamlProgram $(PROGRAM_A), $(FILES_A)) $(OCamlProgram $(PROGRAM_A_SORT), $(FILES_A_SORT)) $(OCamlProgram $(PROGRAM_B), $(FILES_B)) $(OCamlProgram $(PROGRAM_B_SORT), $(FILES_B_SORT))
 
 clean:
 	rm -f *~ *.opt *.cmi *.cmx *.o *.omc *.cma *.cmxa *.annot
-	rm -f $(PROGRAM) $(PROGRAM_A)
+	rm -f $(PROGRAM) $(PROGRAM_A) $(PROGRAM_B) $(PROGRAM_SORT) $(PROGRAM_A_SORT) $(PROGRAM_B_SORT)
 
-check: all
+check_rand:
 	./$(PROGRAM)
 	./$(PROGRAM)
 	./$(PROGRAM)
 	./$(PROGRAM_A)
 	./$(PROGRAM_A)
 	./$(PROGRAM_A)
+	./$(PROGRAM_B)
+	./$(PROGRAM_B)
+	./$(PROGRAM_B)
+
+check_sort:
 	./$(PROGRAM_SORT)
 	./$(PROGRAM_SORT)
 	./$(PROGRAM_SORT)
 	./$(PROGRAM_A_SORT)
 	./$(PROGRAM_A_SORT)
 	./$(PROGRAM_A_SORT)
+	./$(PROGRAM_B_SORT)
+	./$(PROGRAM_B_SORT)
+	./$(PROGRAM_B_SORT)
