@@ -23,6 +23,13 @@ FILES_SORT[] =
 
 PROGRAM_SORT = redblack_tree_test_sorted
 
+FILES_RSORT[] =
+   redblack_tree_testbase
+   redblack_tree_test_rsorted
+   redblack_tree
+
+PROGRAM_RSORT = redblack_tree_test_rsorted
+
 FILES_A[] =
    redblack_tree_testbase
    redblack_tree_test_ex3_10a
@@ -36,6 +43,13 @@ FILES_A_SORT[] =
    redblack_tree_ex3_10a
 
 PROGRAM_A_SORT = redblack_tree_test_ex3_10a_sorted
+
+FILES_A_RSORT[] =
+   redblack_tree_testbase
+   redblack_tree_test_ex3_10a_rsorted
+   redblack_tree_ex3_10a
+
+PROGRAM_A_RSORT = redblack_tree_test_ex3_10a_rsorted
 
 FILES_B[] =
    redblack_tree_testbase
@@ -52,11 +66,11 @@ FILES_B_SORT[] =
 PROGRAM_B_SORT = redblack_tree_test_ex3_10b_sorted
 
 .DEFAULT: all
-all: $(OCamlProgram $(PROGRAM), $(FILES)) $(OCamlProgram $(PROGRAM_SORT), $(FILES_SORT)) $(OCamlProgram $(PROGRAM_A), $(FILES_A)) $(OCamlProgram $(PROGRAM_A_SORT), $(FILES_A_SORT)) $(OCamlProgram $(PROGRAM_B), $(FILES_B)) $(OCamlProgram $(PROGRAM_B_SORT), $(FILES_B_SORT))
+all: $(OCamlProgram $(PROGRAM), $(FILES)) $(OCamlProgram $(PROGRAM_SORT), $(FILES_SORT)) $(OCamlProgram $(PROGRAM_A), $(FILES_A)) $(OCamlProgram $(PROGRAM_A_SORT), $(FILES_A_SORT)) $(OCamlProgram $(PROGRAM_B), $(FILES_B)) $(OCamlProgram $(PROGRAM_B_SORT), $(FILES_B_SORT)) $(OCamlProgram $(PROGRAM_RSORT), $(FILES_RSORT)) $(OCamlProgram $(PROGRAM_A_RSORT), $(FILES_A_RSORT))
 
 clean:
 	rm -f *~ *.opt *.cmi *.cmx *.o *.omc *.cma *.cmxa *.annot
-	rm -f $(PROGRAM) $(PROGRAM_A) $(PROGRAM_B) $(PROGRAM_SORT) $(PROGRAM_A_SORT) $(PROGRAM_B_SORT)
+	rm -f $(PROGRAM) $(PROGRAM_A) $(PROGRAM_B) $(PROGRAM_SORT) $(PROGRAM_A_SORT) $(PROGRAM_B_SORT) $(PROGRAM_RSORT) $(PROGRAM_A_RSORT)
 
 check_rand:
 	./$(PROGRAM)
@@ -65,9 +79,6 @@ check_rand:
 	./$(PROGRAM_A)
 	./$(PROGRAM_A)
 	./$(PROGRAM_A)
-	./$(PROGRAM_B)
-	./$(PROGRAM_B)
-	./$(PROGRAM_B)
 
 check_sort:
 	./$(PROGRAM_SORT)
@@ -76,6 +87,11 @@ check_sort:
 	./$(PROGRAM_A_SORT)
 	./$(PROGRAM_A_SORT)
 	./$(PROGRAM_A_SORT)
-	./$(PROGRAM_B_SORT)
-	./$(PROGRAM_B_SORT)
-	./$(PROGRAM_B_SORT)
+
+check_rsort:
+	./$(PROGRAM_RSORT)
+	./$(PROGRAM_RSORT)
+	./$(PROGRAM_RSORT)
+	./$(PROGRAM_A_RSORT)
+	./$(PROGRAM_A_RSORT)
+	./$(PROGRAM_A_RSORT)
