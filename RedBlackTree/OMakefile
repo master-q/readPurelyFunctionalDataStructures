@@ -79,6 +79,9 @@ check_rand:
 	./$(PROGRAM_A)
 	./$(PROGRAM_A)
 	./$(PROGRAM_A)
+	./$(PROGRAM_B)
+	./$(PROGRAM_B)
+	./$(PROGRAM_B)
 
 check_sort:
 	./$(PROGRAM_SORT)
@@ -87,6 +90,9 @@ check_sort:
 	./$(PROGRAM_A_SORT)
 	./$(PROGRAM_A_SORT)
 	./$(PROGRAM_A_SORT)
+	./$(PROGRAM_B_SORT)
+	./$(PROGRAM_B_SORT)
+	./$(PROGRAM_B_SORT)
 
 check_rsort:
 	./$(PROGRAM_RSORT)
