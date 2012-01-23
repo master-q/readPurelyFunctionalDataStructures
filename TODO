@@ -1,0 +1,23 @@
+* ↓のコードをex3.10(b)としてOCamlで実装してベンチ取る
+
+insert x s = T B a' y b'
+  where
+    ins E        = T R E x E
+    ins n@(T _ _ v _)
+      | x < v     = insl n 
+      | x > v     = insr n 
+      | otherwise = n 
+    insl (T color E v r) = T color (T R E x E) v r 
+    insl n@(T color l@(T _ _ v2 _) v r)
+      | x < v2 = llbalance color (insl l) v r
+      | x > v2 = lrbalance color (insr l) v r
+      | otherwise = n 
+    insr (T color l v E) = T color l v (T R E x E)
+    insr n@(T color l v r@(T _ _ v2 _))
+      | x < v2 = rlbalance color l v (insl r)  
+      | x > v2 = rrbalance color l v (insr r)
+      | otherwise = n 
+
+    T _ a' y b' = ins s
+
+http://chaton.practical-scheme.net/haskell-ja/a/2012/01/23#entry-4f1d05da-3d71c
