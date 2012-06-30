@@ -1,4 +1,5 @@
 open List
+open Printf
 open Small_stream
 
 exception RealTimeQueue_notmatch
@@ -26,4 +27,23 @@ module RTQueue = struct
   let tail = function
     | (lazy SSnil, r, s)          -> raise RealTimeQueue_empty
     | (lazy (SScons(x, f)), r, s) -> exec (f, r, s)
+
+  let show_ss s =
+    let rec show' = function
+      | lazy SSnil          -> "nil"
+      | lazy (SScons(a, s)) -> (Printf.sprintf "%d," a) ^ (show' s)
+    in Printf.sprintf "[ss|%s]" (show' s)
+
+  let show_l l =
+    let rec show' = function
+      | []    -> ""
+      | [x]   -> Printf.sprintf "%d" x
+      | x::xs -> (Printf.sprintf "%d," x) ^ (show' xs)
+    in Printf.sprintf "[%s]" (show' l)
+
+  let show (f, r, s) =
+    Printf.sprintf "RTQueue(%s,%s,%s)"
+      (show_ss f)
+      (show_l r)
+      (show_ss s)
 end
