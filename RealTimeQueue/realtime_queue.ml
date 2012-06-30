@@ -29,7 +29,9 @@ module RTQueue = struct
     | (lazy (SScons(x, f)), r, s) -> exec (f, r, s)
 
   let show_ss s =
-    let rec show' = function
+    let rec show' s =
+      if not (Lazy.lazy_is_val s) then "susp"
+      else match s with
       | lazy SSnil          -> "nil"
       | lazy (SScons(a, s)) -> (Printf.sprintf "%d," a) ^ (show' s)
     in Printf.sprintf "[ss|%s]" (show' s)
