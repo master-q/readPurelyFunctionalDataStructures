@@ -1,0 +1,24 @@
+.PHONY: all clean check
+
+USE_OCAMLFIND = true
+
+OCAMLPACKS[] =
+   oUnit
+
+OCAMLFLAGS += -annot
+
+FILES[] =
+   sched_binomial_heap_test
+   sched_binomial_heap
+
+PROGRAM = sched_binomial_heap_test
+
+.DEFAULT: all
+all: $(OCamlProgram $(PROGRAM), $(FILES))
+
+clean:
+	rm -f *~ *.opt *.cmi *.cmx *.o *.omc *.cma *.cmxa *.annot
+	rm -f sched_binomial_heap_test
+
+check: all
+	./$(PROGRAM)
